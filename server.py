@@ -13,6 +13,9 @@ def handle_client(conn, addr):
     connected = True;
     while connected:
         msg = conn.recv(64).decode('utf-8')     # Receive 64 bytes of data from the client
+        if not msg:
+            print(f"Client {addr} has disconnected.")
+            break
         print(f"Received from client {addr}: {msg}")
         if msg == DISCONNECT_MESSAGE:
             print(f"Client {addr} has disconnected.")
