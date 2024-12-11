@@ -27,9 +27,10 @@ def start():
     server.listen()
     while True:
         conn, addr = server.accept()
-        # thread = threading.Thread(target=handle_client, args(conn, addr))
-        # thread.start()
-        handle_client(conn, addr)
+        thread = threading.Thread(target=handle_client, args=(conn, addr))
+        thread.start()
+        # handle_client(conn, addr)
+        print(f"Active connections: {thread.active_count() - 1}")
         
 
 
