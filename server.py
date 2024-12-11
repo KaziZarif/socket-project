@@ -30,7 +30,7 @@ def start():
         thread = threading.Thread(target=handle_client, args=(conn, addr))
         thread.start()
         # handle_client(conn, addr)
-        print(f"Active connections: {thread.active_count() - 1}")
+        print(f"Active connections: {threading.active_count() - 1}")
         
 
 
