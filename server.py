@@ -22,13 +22,26 @@ def handle_client(conn, addr):
             break
     conn.close()
 
+def send_messages(conn, addr):
+    try:
+        while True:
+            msg = input("Send: ")
+            conn.send(msg.encode('utf-8'))
+    except (BrokenPipeError, ConnectionResetError):
+        print(f"Connection with {addr} has been lost. Unable to send messages.")
+    except Exception as e:
+        print(f"An unexpected error while sending messages to {addr}: {e}")
+
+
 
 def start():
     server.listen()
     while True:
         conn, addr = server.accept()
-        thread = threading.Thread(target=handle_client, args=(conn, addr))
-        thread.start()
+        receive_thread = threading.Thread(target=handle_client, args=(conn, addr))
+        receive_thread.start()
+        send_thread = threading.Thread(target=send_messages, args=(conn,addr))
+        send_thread.start()
         # handle_client(conn, addr)
         print(f"Active connections: {threading.active_count() - 1}")
         
